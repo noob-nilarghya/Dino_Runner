@@ -12,6 +12,8 @@ body{
 }
 .name{
     color: white;
+    text-decoration:underline;
+    text-decoration-style:dotted;
 }
 .lnk{
     text-align: center;
@@ -49,6 +51,8 @@ body{
     height: 30px;
     width: 100px;
     margin-bottom: 5px;
+    background-color: black;
+    color: white;
 }
 .restart{
     height: 50px;
