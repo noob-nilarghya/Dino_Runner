@@ -1,4 +1,10 @@
 //alert("Please play on large display devices, Thanking you :)");
+var w = window.innerWidth;
+var h = window.innerHeight;
+console.log(w, h); // 1212 X 687
+if(w<1212 || h<687){
+    alert("This game is not adapted for display smaller than 1212px * 687px. Sorry for inconvenience :(");
+}
 
 // Targetting all the required elements
 const playGround= document.querySelector(".playground")
@@ -96,7 +102,7 @@ startBtn.addEventListener("click", function () {
 
 
     let collisionCondition; // isCollision indicator [true denotes collision]
-    let count=0; // updating count to randomly call other cactus after every ~ 1.8 sec
+    let count=0; // updating count to replicate running state of dino
 
     const check= setInterval(function () { //check collision status after every 50ms, & update random cactus cls
 
@@ -126,24 +132,21 @@ startBtn.addEventListener("click", function () {
             cloud.style.animationPlayState = "paused";
             playGround.classList.add("gameEnd");
             dino.style.backgroundImage = "url('assets/image/DinoDead.png')";
+            var gameOverDino= new Audio("assets/audio/gameOver.wav");
+            gameOverDino.play();
             gameOverImg.classList.remove("isVisible");
             reset.classList.remove("isVisible");
             flag_strt=false; exitStatus=1;
             clearInterval(check);
         }
         
-        if(count%36==0){ // after every ~1.8 sec update the cactus cls
-            if (cactus.classList.length === 3) {
-                const changeCactus= setTimeout(function(){ // after 50ms (when cactus goes out of playing canvas) change cactus
-                    cactus.classList.remove(cactus.classList[1]); //remove existing cactus class
-                    cactus.classList.remove(cactus.classList[1]); //remove existing cactusMove class
-                    cactus.classList.add("cactus" + randomNum());
-                    cactus.classList.add("cactusMove");
-                    
-                    if(exitStatus==1){  clearInterval(check);  }
-                }, 50);
-                if(exitStatus==1){  clearInterval(check);  }
-            }
+        if (cactusLeft<-50 && cactusLeft>-300) { // ensuring cactus class should change when cactus is outside of playing canvas
+            cactus.classList.remove(cactus.classList[1]); //remove existing cactus class
+            cactus.classList.remove(cactus.classList[1]); //remove existing cactusMove class
+            cactus.classList.add("cactus" + randomNum());
+            cactus.classList.add("cactusMove");
+                
+            if(exitStatus==1){  clearInterval(check);  }
         }
         if(exitStatus==1){  clearInterval(check);  }
 
