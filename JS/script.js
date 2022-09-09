@@ -109,7 +109,7 @@ startBtn.addEventListener("click", function () {
         let cactusLeft = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
 
         if(cactusLeft>=100 && cactusLeft<=150){
-    
+
             autoCollissionHandle=true;
             if(flag_auto===true && autoCollissionHandle===true && flag_auto_main===true){
                 dinoJump();
