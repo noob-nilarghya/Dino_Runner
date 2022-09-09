@@ -14,21 +14,19 @@ const instruction= document.querySelector(".instruction");
 const Score= document.querySelector(".score");
 
 
-let flag_strt=false;
-let flag_auto=true;
-let flag_auto_main=false;
+let flag_strt=false; // wheather gae has started or not !
+let flag_auto_main=false; // wheather autoPlay is ON or OFF
 let score=0;
 
 // Function to initiate jump animation for dino
 function dinoJump() {
-    if (dino.classList.length == 1) {
+    if (dino.classList.contains("jump")===false) { // iF dino currently has no jump class, then only jump!
         dino.classList.add("jump");
         var audioFileJump= new Audio("assets/audio/jump.mp3");
         audioFileJump.play();
         setTimeout(function () {
             dino.classList.remove("jump");
         }, 300);
-        flag_auto=false;
     }
 }
 
@@ -41,20 +39,22 @@ function randomNum() {
     return a;
 }
 
-// function to call dinoJump on keypress
-document.addEventListener("keydown", function (event) {
-    dinoJump();
-    if(flag_strt===true && flag_auto_main===false){
-        score+=5;
-        Score.textContent="Score: "+score;
-        if(score%50==0){
-            var audioFileMilestone= new Audio("assets/audio/milestone.mp3");
-            audioFileMilestone.play();
+// function to call dinoJump on keydown
+document.addEventListener("keydown", function (e) {
+    if(e.code==="Space"){
+        dinoJump();
+        if(flag_strt===true && flag_auto_main===false){ // If game has started && autoPlay is off
+            score+=5;
+            Score.textContent="Score: "+score;
+            if(score%50==0){ // If score is multiple of 50 --> Play sound!
+                var audioFileMilestone= new Audio("assets/audio/milestone.mp3");
+                audioFileMilestone.play();
+            }
         }
-    }
-    if(flag_auto_main===true){
-        flag_auto_main=false;
-        automate.style.backgroundColor="red"
+        if(flag_auto_main===true){ // If palyer press "Space" while autoPlay is on, autoPlay will turned off !
+            flag_auto_main=false;
+            automate.style.backgroundColor="red";
+        }
     }
 });
 
@@ -71,19 +71,21 @@ automate.addEventListener("mouseout", function () {
 });
 
 reset.addEventListener("click", function(){
-    location.reload();
+    location.reload(); // reload 
 });
 
+let exitStatus=0;
 
 startBtn.addEventListener("click", function () {
 
-    instruction.classList.add("isVisible");
+    instruction.classList.add("isVisible"); // instruction not Visible
     flag_strt=true;
     startBtn.style.backgroundColor="green";
+
     // first move the reuired element back in their default positions
     cactus.style.left = "1150px";
     cloud.style.left = "1110px";
-    dino.classList.add("jump");
+    dino.classList.add("jump"); // when game just starts --> Jump dino
     setTimeout(function () {
         dino.classList.remove("jump");
     }, 300);
@@ -94,29 +96,27 @@ startBtn.addEventListener("click", function () {
 
 
     let collisionCondition; // isCollision indicator [true denotes collision]
-    let autoCollissionHandle;
     let count=0; // updating count to randomly call other cactus after every ~ 1.8 sec
 
-    setInterval(function () { //check collision after every 50ms, & update random cactus cls
+    const check= setInterval(function () { //check collision status after every 50ms, & update random cactus cls
 
         count++;
 
-        let dinoRun= 'assets/image/DinoRun'+count%2+'.png';
+        let dinoRun= 'assets/image/DinoRun'+count%2+'.png'; // to replicate running state of dino !
         dino.style.backgroundImage = "url('"+dinoRun+"')";
 
         // targetting & getting y-co-ordinate of dino & -x co-ordinate of current cactus
-        let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("top"));
+        let dinoTop = parseInt(window.getComputedStyle(dino).getPropertyValue("top")); console.log(dinoTop);
         let cactusLeft = parseInt(window.getComputedStyle(cactus).getPropertyValue("left"));
 
-        if(cactusLeft>=100 && cactusLeft<=150){
+        if(cactusLeft>=100 && cactusLeft<=150){ // cactus is in the vicinity of dino --> so automate dino jump
 
-            autoCollissionHandle=true;
-            if(flag_auto===true && autoCollissionHandle===true && flag_auto_main===true){
+            if(flag_auto_main===true){
                 dinoJump();
-                flag_auto=false;
             }
         }
         
+        // Manual Jumping
         collisionCondition = (cactusLeft >= 0 && cactusLeft <= 40) && (dinoTop > 250);
         if (collisionCondition === true) { //collision==true
             
@@ -128,20 +128,24 @@ startBtn.addEventListener("click", function () {
             dino.style.backgroundImage = "url('assets/image/DinoDead.png')";
             gameOverImg.classList.remove("isVisible");
             reset.classList.remove("isVisible");
-            flag_strt=false;
-            return count;
-            
+            flag_strt=false; exitStatus=1;
+            clearInterval(check);
         }
         
         if(count%36==0){ // after every ~1.8 sec update the cactus cls
             if (cactus.classList.length === 3) {
-                cactus.classList.remove(cactus.classList[1]); //remove existing cactus class
-                cactus.classList.remove(cactus.classList[1]); //remove existing cactusMove class
-                cactus.classList.add("cactus" + randomNum());
-                cactus.classList.add("cactusMove");
-                flag_auto=true;
+                const changeCactus= setTimeout(function(){ // after 50ms (when cactus goes out of playing canvas) change cactus
+                    cactus.classList.remove(cactus.classList[1]); //remove existing cactus class
+                    cactus.classList.remove(cactus.classList[1]); //remove existing cactusMove class
+                    cactus.classList.add("cactus" + randomNum());
+                    cactus.classList.add("cactusMove");
+                    
+                    if(exitStatus==1){  clearInterval(check);  }
+                }, 50);
+                if(exitStatus==1){  clearInterval(check);  }
             }
         }
+        if(exitStatus==1){  clearInterval(check);  }
 
     }, 50);
     
