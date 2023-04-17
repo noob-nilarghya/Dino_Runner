@@ -21,32 +21,24 @@ body{
 
 /* =======================Visibility===================== */
 .isVisible{
-    visibility: hidden;
+    display: none;
 }
 .container{
     text-align: center;
-    position: relative;
+    /* position: relative; */
     overflow: hidden;
 }
 /* =======================Start/ Restart Button===================== */
-#start{
+#start, #automate{
     height: 35px;
     width: 150px;
     margin-bottom: 20px;
     margin-right: 10px;
     color: white;
     background-color: red;
-    border-radius: 20% 20% 20% 20%;
+    border-radius: 20%;
 }
-#automate{
-    height: 35px;
-    width: 150px;
-    margin-bottom: 20px;
-    margin-left: 10px;
-    color: white;
-    background-color: red;
-    border-radius: 20% 20% 20% 20%;
-}
+
 #reset{
     height: 30px;
     width: 100px;
@@ -64,6 +56,7 @@ body{
     width: 1200px;
     border: 2px solid black;
     background-color: white;
+    position: relative;
 }
 /* =======================T-REXX Dino===================== */
 .dino{
@@ -71,60 +64,63 @@ body{
     width: 70px;
     background-image: url(../assets/image/dino.png);
     background-size: 70px;
-    position: relative;
-    top: 300px;
+    position: absolute;
+    bottom: 40px;
 }
 .jump{
-    animation: dinoAnime 0.5s linear infinite;
+    animation: dinoAnime 0.45s linear infinite;
 }
 @keyframes dinoAnime {
     0%,100%{
-        top:300px;
+        bottom: 40px;
     }
     45%,55%{
-        top: 120px;
+        bottom: 160px;
     }
     50%{
-        top: 120px;
+        bottom: 160px;
     }
     60%{
-        top: 140px;
+        bottom: 140px;
+    }
+    70%{
+        bottom: 120px;
     }
     80%{
-        top: 200px;
+        bottom: 100px;
     }
 }
 /* =======================Cactus 1/ Cactus 2/ Castus 3===================== */
 .cactus1{
     height: 70px;
     width: 40px;
-    position: relative;
+    position: absolute;
     background-image: url(../assets/image/SmallCactus1.png);
     background-repeat: no-repeat;
-    top: 240px;
+    bottom: 40px;
     left: 1150px;
 }
 .cactus2{
     height: 70px;
     width: 70px;
-    position: relative;
+    position: absolute;
     background-image: url(../assets/image/SmallCactus2.png);
     background-repeat: no-repeat;
-    top: 240px;
+    bottom: 40px;
     left: 1100px;
 }
 .cactus3{
     height: 70px;
     width: 100px;
-    position: relative;
+    position: absolute;
     background-image: url(../assets/image/SmallCactus3.png);
     background-repeat: no-repeat;
-    top: 240px;
+    bottom: 40px;
     left: 1100px;
 }
 
 .cactusMove{
-    animation: cactusAnime 1.8s linear infinite;
+    animation: cactusAnime 1.9s linear infinite;
 }
 @keyframes cactusAnime {
     0%{
@@ -138,29 +134,28 @@ body{
 .track{
     height: 30px;
     width: 4000px;
-    position: relative;
-    top: 220px;
+    position: absolute;
     background-image: url(../assets/image/Track.png);
     background-repeat: repeat-x;
-    right: 0px;
+    bottom: 26px;
 }
 .trackMove{
     animation: trackAnime 3.2s linear infinite;
 }
 @keyframes trackAnime {
     0%{
-        right: 0px;
+        right: -200%;
     }
     100%{
-        right: 200%;
+        right: 0%;
     }
 }
 /* =======================Clouds===================== */
 .cloud{
     height: 30px;
     width: 90px;
-    position: relative;
-    top: -60px;
+    position: absolute;
+    top: 50px;
     background-image: url(../assets/image/Cloud.png);
     background-repeat: no-repeat;
     left: 1110px;
@@ -181,10 +176,7 @@ body{
     font-weight: 600;
 }
 
-.git{
-    padding-right: 20px;
-}
-.mail{
+.git, .mail{
     padding-right: 20px;
 }
 .gameOver{

@@ -3,26 +3,26 @@ var w = window.innerWidth;
 var h = window.innerHeight;
 console.log(w, h); // 1212 X 687
 if(w<1212 || h<687){
-    alert("This game is not adapted for display smaller than 1212px * 687px. Sorry for inconvenience :(");
+    alert("This game is not adapted for display smaller than 1212px * 687px. Sorry :(");
 }
 
 // Targetting all the required elements
-const playGround= document.querySelector(".playground")
-const startBtn = document.querySelector("#start");
-const automate= document.querySelector("#automate");
-const reset= document.querySelector("#reset");
-const dino = document.querySelector(".dino");
-const cactus = document.querySelector(".cactus")
-const track = document.querySelector(".track");
-const cloud = document.querySelector(".cloud");
-const gameOverImg = document.querySelector(".gameOver");
-const instruction= document.querySelector(".instruction");
-const Score= document.querySelector(".score");
+const playGround= document.querySelector(".playground"); // white canvas
+const startBtn = document.querySelector("#start"); // start button
+const automate= document.querySelector("#automate"); // automate button
+const reset= document.querySelector("#reset"); // reset button
+const dino = document.querySelector(".dino"); // dino 
+const cactus = document.querySelector(".cactus") // cactus
+const track = document.querySelector(".track"); // track
+const cloud = document.querySelector(".cloud"); // cloud
+const gameOverImg = document.querySelector(".gameOver"); // gameOver image
+const instruction= document.querySelector(".instruction"); // instrution text
+const Score= document.querySelector(".score"); // score class
 
 
-let flag_strt=false; // wheather gae has started or not !
+let flag_strt=false; // wheather game has started or not !
 let flag_auto_main=false; // wheather autoPlay is ON or OFF
-let score=0;
+let score=0; let scoreTimer;
 
 // Function to initiate jump animation for dino
 function dinoJump() {
@@ -32,7 +32,7 @@ function dinoJump() {
         audioFileJump.play();
         setTimeout(function () {
             dino.classList.remove("jump");
-        }, 300);
+        }, 450);
     }
 }
 
@@ -91,7 +91,7 @@ startBtn.addEventListener("click", function () {
     // first move the reuired element back in their default positions
     cactus.style.left = "1150px";
     cloud.style.left = "1110px";
-    dino.classList.add("jump"); // when game just starts --> Jump dino
+    dino.classList.add("jump"); // when game just starts --> Jump dino once (replicate actual game)
     setTimeout(function () {
         dino.classList.remove("jump");
     }, 300);
@@ -102,7 +102,7 @@ startBtn.addEventListener("click", function () {
 
 
     let collisionCondition; // isCollision indicator [true denotes collision]
-    let count=0; // updating count to replicate running state of dino
+    let count=0; // updating count to achieve running (leg) state of dino
 
     const check= setInterval(function () { //check collision status after every 50ms, & update random cactus cls
 
@@ -123,7 +123,7 @@ startBtn.addEventListener("click", function () {
         }
         
         // Manual Jumping
-        collisionCondition = (cactusLeft >= 0 && cactusLeft <= 40) && (dinoTop > 250);
+        collisionCondition = (cactusLeft >= 0 && cactusLeft <= 40) && (dinoTop > 250); // 220= 40+70+70 (error +-30px due to lag)
         if (collisionCondition === true) { //collision==true
             
             dino.style.animationPlayState = "paused";
@@ -146,9 +146,9 @@ startBtn.addEventListener("click", function () {
             cactus.classList.add("cactus" + randomNum());
             cactus.classList.add("cactusMove");
                 
-            if(exitStatus==1){  clearInterval(check);  }
+            if(exitStatus==1){ clearInterval(check);  }
         }
-        if(exitStatus==1){  clearInterval(check);  }
+        if(exitStatus==1){ clearInterval(check);  }
 
     }, 50);
     
